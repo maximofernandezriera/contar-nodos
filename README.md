@@ -1,64 +1,58 @@
-# Ejercicio: Contar Nodos en una Lista Enlazada
+# Ejercicio: Diccionario Básico en Java
 
 ## Descripción
 
-Este ejercicio consiste en implementar un método que cuente el número total de nodos en una lista enlazada simple.
+Este ejercicio consiste en implementar un sistema de búsqueda simple para un diccionario que almacena pares de palabras (clave y valor) utilizando un array.
 
 ## Estructura de Datos
 
-Trabajaremos con la siguiente estructura de nodo:
+Trabajaremos con una clase sencilla llamada `Entrada` que representa cada par del diccionario:
 
 ```java
-class Nodo {
-    int dato;
-    Nodo siguiente;
+class Entrada {
+    String palabra;
+    String significado;
 
-    Nodo(int dato) {
-        this.dato = dato;
-        this.siguiente = null;
+    Entrada(String palabra, String significado) {
+        this.palabra = palabra;
+        this.significado = significado;
     }
 }
 ```
 
-Cada nodo contiene:
-- **dato**: Un valor entero almacenado en el nodo
-- **siguiente**: Una referencia al siguiente nodo de la lista (o `null` si es el último)
+Cada entrada contiene:
+- **palabra**: La clave que queremos buscar (ej: "Java").
+- **significado**: La definición o traducción asociada (ej: "Lenguaje de programación").
 
 ## Enunciado
 
-Implementa el método `contarNodos` que:
+Implementa el método `buscarSignificado` que:
 
-1. Reciba como parámetro el **nodo inicial** (cabeza) de una lista enlazada
-2. Devuelva un **entero** con el número total de nodos en la lista
-3. Si la lista está vacía (`null`), debe devolver `0`
+1. Reciba como parámetro un **array de objetos Entrada** (el diccionario).
+2. Reciba una **String** con la palabra que queremos buscar.
+3. Devuelva una **String** con el significado correspondiente.
+4. Si la palabra no existe en el diccionario, debe devolver el mensaje: `"Palabra no encontrada"`.
 
 ### Firma del método
 
 ```java
-public static int contarNodos(Nodo inicio)
+public static String buscarSignificado(Entrada[] diccionario, String palabraBuscada)
 ```
 
 ## Ejemplos
 
-### Ejemplo 1: Lista con varios elementos
-
+### Ejemplo 1: Palabra existente
 ```
-Lista: 5 -> 12 -> 7 -> 3
-Resultado: 4
-```
-
-### Ejemplo 2: Lista con un solo elemento
-
-```
-Lista: 42
-Resultado: 1
+Diccionario: [{"Java", "Lenguaje"}, {"Hola", "Saludo"}]
+Búsqueda: "Java"
+Resultado: "Lenguaje"
 ```
 
-### Ejemplo 3: Lista vacía
-
+### Ejemplo 2: Palabra inexistente
 ```
-Lista: null (vacía)
-Resultado: 0
+Diccionario: [{"Java", "Lenguaje"}]
+Búsqueda: "Python"
+Resultado: "Palabra no encontrada"
 ```
 
 ---
@@ -67,57 +61,21 @@ Resultado: 0
 
 ### Análisis del problema
 
-Para contar los nodos de una lista enlazada, debemos **recorrer la lista completa** desde el primer nodo hasta el último, incrementando un contador por cada nodo que visitemos.
+Para encontrar un significado en un diccionario basado en un array, debemos realizar una **búsqueda secuencial**. Esto implica revisar cada posición del array una por una hasta que encontremos la palabra que coincide con nuestra búsqueda.
 
 ### Algoritmo paso a paso
 
-1. **Inicializar** un contador a 0
-2. **Inicializar** una variable auxiliar que apunte al nodo inicial
-3. **Mientras** el nodo actual no sea `null`:
-   - Incrementar el contador en 1
-   - Avanzar al siguiente nodo
-4. **Devolver** el valor del contador
+1. **Recorrer** el array desde la posición `0` hasta el final.
+2. **Comparar** la palabra de la entrada actual con la palabra buscada (recuerda usar `.equals()`).
+3. **Si coinciden**: Devolver inmediatamente el significado de esa entrada.
+4. **Si termina el bucle** y no hemos devuelto nada: Significa que la palabra no está, por lo que devolvemos `"Palabra no encontrada"`.
 
 ### Representación visual
 
-Supongamos que tenemos la lista `5 -> 12 -> 7 -> 3`:
+Buscando "Manzana" en un diccionario de 3 frutas:
 
 ```
-Paso inicial:
-contador = 0
-actual → [5] → [12] → [7] → [3] → null
-
-Paso 1:
-contador = 1
-actual → [12] → [7] → [3] → null
-
-Paso 2:
-contador = 2
-actual → [7] → [3] → null
-
-Paso 3:
-contador = 3
-actual → [3] → null
-
-Paso 4:
-contador = 4
-actual → null  ← FIN del bucle
-
-Resultado: 4
-```
-
-### Salida esperada
-
-```
-Lista 1: 5 -> 12 -> 7 -> 3
-Número de nodos: 4
-Esperado: 4
-
-Lista 2: 42
-Número de nodos: 1
-Esperado: 1r
-
-Lista 3: (vacía)
-Número de nodos: 0
-Esperado: 0
+Índice 0: [Pera | Fruta verde] -> ¿Es "Manzana"? NO.
+Índice 1: [Manzana | Fruta roja] -> ¿Es "Manzana"? SÍ. 
+RETORNAR "Fruta roja"
 ```
